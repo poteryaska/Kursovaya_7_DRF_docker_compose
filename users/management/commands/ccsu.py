@@ -1,8 +1,9 @@
 from django.core.management import BaseCommand
 
+from config import settings
 from users.models import User
 
-
+CHAT_ID = settings.CHAT_ID
 class Command(BaseCommand):
     def handle(self, *args, **options):
         user = User.objects.create(
@@ -23,6 +24,7 @@ class Command(BaseCommand):
             first_name="test@gmail.com",
             last_name="test@gmail.com",
             telegram_user_name="@poteryashka5",
+            chat_id=CHAT_ID,
             is_superuser=False,
             is_staff=False,
             is_active=True
