@@ -1,35 +1,34 @@
-from django.core.exceptions import ValidationError
 from django.db import models
-
-NULLABLE = {'blank': True, 'null': True}
+from config import settings
+import django as django
 
 
 class Habit(models.Model):
 
-    DAILY = 'Ежедневная'
-    WEEKLY = 'Еженедельная'
+    class HabitFrequency(models.TextChoices):
+        Daily = 'DAILY'
+        monday = 'MONDAY'
+        tuesday = 'TUESDAY'
+        wednesday = 'WEDNESDAY'
+        thursday = 'THURSDAY'
+        friday = 'FRIDAY'
+        saturday = 'SATURDAY'
+        sunday = 'SUNDAY'
 
-    FREQUENCY_CHOICES = (
-        (DAILY, 'Ежедневная'),
-        (WEEKLY, 'Еженедельная'),
-
-    )
-
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE, verbose_name='владелец')
-    place = models.CharField(max_length=50, verbose_name='место')
-    timing = models.TimeField(verbose_name='время начала привычки')
-    action = models.CharField(max_length=100, verbose_name='действие')
-    is_pleasant = models.BooleanField(default=False, verbose_name='признак приятной привычки')
-    related_habit = models.ForeignKey('self', on_delete=models.CASCADE, verbose_name='связанная привычка', **NULLABLE)
-    frequency = models.CharField(choices=FREQUENCY_CHOICES, default=DAILY, verbose_name='периодичность')
-    reward = models.CharField(max_length=255, verbose_name='вознаграждение', **NULLABLE)
-    time_to_perform = models.CharField(verbose_name='время на выполнение')
-    is_public = models.BooleanField(default=False, verbose_name='признак публичности')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, verbose_name="owner of habit")
+    place = models.CharField(max_length=100, null=False, blank=False, verbose_name="place for habit")
+    time = models.TimeField(default=django.utils.timezone.now, verbose_name="start time for habit")
+    action = models.CharField(max_length=100, null=False, blank=False, verbose_name="habit action")
+    is_pleasant = models.BooleanField(default=False, verbose_name="flag for pleasant habit")
+    link_pleasant = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
+    frequency = models.CharField(choices=HabitFrequency.choices, default=HabitFrequency.Daily)
+    award = models.CharField(max_length=100, null=True, blank=True, verbose_name="award for habit")
+    duration = models.IntegerField(null=False, blank=False, verbose_name="habit duration")
+    is_public = models.BooleanField(default=True)
 
     def __str__(self):
-        return f'Я буду {self.action} в {self.timing} в {self.place} заниматься {self.action}'
-
+        return f"ACTION: {self.action} PLACE: {self.place}"
 
     class Meta:
-        verbose_name = 'habit'
+        verbose_name = "habit"
         verbose_name_plural = 'habits'
