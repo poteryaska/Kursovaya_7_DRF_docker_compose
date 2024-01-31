@@ -86,9 +86,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv('BASE_NAME'),
-        'USER': os.getenv('BASE_USER'),# Пользователь для подключения
-        'PASSWORD': os.getenv('BASE_PASSWORD'),# Пароль для этого пользователя
+        'NAME': 'habits',  # os.getenv('BASE_NAME'),
+        'USER': 'postgres',  # os.getenv('BASE_USER'),# Пользователь для подключения
+        'PASSWORD': 'mysecretpassword',  # os.getenv('BASE_PASSWORD'),# Пароль для этого пользователя
+        'HOST': 'db',
+
     }
 }
 
