@@ -1,27 +1,12 @@
-## Coursework_7_DRF
+# Docker compose
 
-# WORK WITH DJANGO DRF
-** Allow to create habits scheduler and make notification to user telegram bot
-# Requirements.
-* Python
-* Redis
-* Postgres
-# Installation
-* Download repo
-* Install requirements (pip3 install -r requirements.txt)
-* Run service Redis (redis-server)
 # Prepare
 * prepare .env file (examples in .env_sample)
-* create database for postgres
-* prepare migrations (python3 manage.py makemigrations)
-* make migrate (python3 manage.py migrate)
-* prepare test user (optional) (python3 manage.py ccsu)
-* prepare telegram bot for send information 
-* run command /start in telegram bot
+
 # Start service
-* run command: celery -A config worker -l INFO
-* run command: celery -A config beat -l info -S django
-* python3 manage.py runserver
+* docker-compose build
+* docker-compose up
+
 # Work with API (habits)
 * http://127.0.0.1:8000/api/v1/habits/ - show all habits that user has access
 * http://127.0.0.1:8000/api/v1/habit/int:pk/ - show user's habit detail information
