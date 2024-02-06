@@ -22,7 +22,7 @@ load_dotenv((BASE_DIR / '.env'))
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-5v&bj^ha#h!bmlks1fqsyit+d60yyg+!jeo=y38=iwy3ea$218'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -86,10 +86,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'habits',  # os.getenv('BASE_NAME'),
-        'USER': 'postgres',  # os.getenv('BASE_USER'),# Пользователь для подключения
-        'PASSWORD': 'mysecretpassword',  # os.getenv('BASE_PASSWORD'),# Пароль для этого пользователя
-        'HOST': 'db',
+        'NAME': os.getenv('BASE_NAME'),
+        'USER': os.getenv('BASE_USER'),# Пользователь для подключения
+        'PASSWORD': os.getenv('BASE_PASSWORD'),# Пароль для этого пользователя
+        'HOST': os.getenv('HOST'),
 
     }
 }
@@ -159,8 +159,8 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_TIMEZONE = "Europe/Moscow"

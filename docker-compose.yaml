@@ -11,7 +11,7 @@ services:
     image: postgres
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_PASSWORD=postgres
       - PGDATA=/var/lib/postgresql/data/pgdata
       - POSTGRES_DB=habits
     volumes:
@@ -40,6 +40,8 @@ services:
   celery:
     build: .
     tty: true
+    env_file:
+      - .env
     command:  sh -c "sleep 5 &&  celery -A config worker -l INFO"
     depends_on:
       - redis
@@ -48,6 +50,8 @@ services:
   celery_beat:
     build: .
     tty: true
+    env_file:
+      - .env
     restart: always
     command:  sh -c "sleep 7 &&  celery -A config beat -l INFO -S django"
     depends_on:
